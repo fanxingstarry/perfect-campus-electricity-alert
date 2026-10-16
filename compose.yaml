@@ -1,0 +1,30 @@
+services:
+  electricity-alert:
+    build:
+      context: .
+    image: perfect-campus-electricity-alert:local
+    restart: unless-stopped
+    init: true
+    environment:
+      SCHOOL_ID: ${SCHOOL_ID:-}
+      STUDENT_ID: ${STUDENT_ID:-}
+      ROOM_VERIFY: ${ROOM_VERIFY:-}
+      DINGTALK_ACCESS_TOKEN: ${DINGTALK_ACCESS_TOKEN:-}
+      DINGTALK_SECRET: ${DINGTALK_SECRET:-}
+      SCHED_TZ: ${SCHED_TZ:-Asia/Shanghai}
+      TZ: ${TZ:-Asia/Shanghai}
+      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-12}
+      SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
+      RUN_ON_START: ${RUN_ON_START:-true}
+      VERBOSE: ${VERBOSE:-false}
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
